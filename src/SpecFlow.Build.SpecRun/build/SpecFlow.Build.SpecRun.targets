@@ -1,0 +1,11 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <SpecRunVersion Condition=" '$(SpecRunVersion)' == '' ">1.7.0</SpecRunVersion>
+    <SpecRunPackageDirectory>$(MSBuildThisFileDirectory)..\..\..\specrun.runner\$(SpecRunVersion)\tools\</SpecRunPackageDirectory>
+    <SpecRunPackageDirectory Condition=" !Exists('$(SpecRunPackageDirectory)') ">$(MSBuildThisFileDirectory)..\..\specrun.runner.$(SpecRunVersion)\tools\</SpecRunPackageDirectory>
+    <SpecRunPackageDirectory Condition=" !Exists('$(SpecRunPackageDirectory)') ">$(NuGetPackageRoot)specrun.runner\$(SpecRunVersion)\tools\</SpecRunPackageDirectory>
+    <SpecRunPackageDirectory Condition=" !Exists('$(SpecRunPackageDirectory)') ">$(NuGetPackageRoot)specrun.runner.$(SpecRunVersion)\tools\</SpecRunPackageDirectory>
+  </PropertyGroup>
+
+</Project>

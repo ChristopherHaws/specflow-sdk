@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>SpecFlow.Sdk</PackageId>
+    <TargetFramework>net46</TargetFramework>
+    <IsTool>true</IsTool>
+    <!-- Suppresses the warnings about the package not having assemblies in lib/*/.dll.-->
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <!-- Copies dependent assemblies from the nuget cache to the project output directory -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TargetsForTfmSpecificContentInPackage>
+      $(TargetsForTfmSpecificContentInPackage);
+      PackDependentAssemblies;
+    </TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.6.82" />
+    <PackageReference Include="SpecFlow.CustomPlugin" Version="2.3.1" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+
+    <!-- marks all packages as 'local only' so they don't end up in the nuspec -->
+    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- pack the props files -->
+    <Content Include="build\**\*" PackagePath="build" />
+  </ItemGroup>
+
+  <!-- Ensures that dependent assemblies are packaged with this nuget package -->
+  <Target Name="PackDependentAssemblies" DependsOnTargets="Publish">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(ReferenceCopyLocalPaths)" PackagePath="$(BuildOutputTargetFolder)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

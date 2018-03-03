@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+    <!-- Suppresses the warnings about the package not having assemblies in lib/*/.dll.-->
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <!-- Change the default location where nuget will put the build output -->
+    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="build\**\*" PackagePath="build" />
+  </ItemGroup>
+
+</Project>

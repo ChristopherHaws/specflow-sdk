@@ -1,0 +1,30 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build -->
+    <!-- http://blog.paranoidcoding.com/2016/04/05/deterministic-builds-in-roslyn.html -->
+    <Deterministic>true</Deterministic>
+    <LangVersion>Latest</LangVersion>
+
+    <Product>SpecFlow</Product>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <PreReleaseVersionLabel>ci</PreReleaseVersionLabel>
+    <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(PreReleaseVersionLabel)-$(BUILD_BUILDNUMBER)</VersionSuffix>
+    <Version Condition=" '$(VersionSuffix)' != '' ">$(VersionPrefix)-$(VersionSuffix)</Version>
+    <Version Condition=" '$(Version)' == '' ">$(VersionPrefix)</Version>
+    <InformationalVersion Condition=" '$(BUILD_SOURCEVERSION)' != '' ">$(Version) - Commit Hash: $(BUILD_SOURCEVERSION)</InformationalVersion>
+
+    <Authors>Christopher.Haws</Authors>
+    <Company>Christopher.Haws</Company>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl Condition=" '$(BUILD_REPOSITORY_URI)' != '' ">$(BUILD_REPOSITORY_URI)</RepositoryUrl>
+    <PackageProjectUrl Condition=" '$(BUILD_REPOSITORY_URI)' != '' ">$(BUILD_REPOSITORY_URI)</PackageProjectUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+
+    <!--
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts</PackageOutputPath>
+    -->
+  </PropertyGroup>
+
+</Project>

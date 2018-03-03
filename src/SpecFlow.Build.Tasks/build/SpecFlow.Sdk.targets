@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <!-- This ensures that msbuild will rebuild this project if the props/targets file changes -->
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SpecFlowTrace Condition=" '$(SpecFlowTrace)' == '' ">false</SpecFlowTrace>
+    <SpecFlowVerbose Condition=" '$(SpecFlowVerbose)' == '' ">false</SpecFlowVerbose>
+  </PropertyGroup>
+
+  <!-- Default item includes (globs and implicit references) -->
+  <Import Project="SpecFlow.Sdk.DefaultItems.targets" />
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      CollectSpecFlowFeatureFiles;
+      GenerateSpecFlowFeatureFiles;
+      AddSpecFlowGeneratedFeatureFiles;
+      $(BuildDependsOn);
+    </BuildDependsOn>
+    <CleanDependsOn>
+      CleanSpecFlowGeneratedFeatureFiles;
+      $(CleanDependsOn);
+    </CleanDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CollectSpecFlowFeatureFiles">
+    <ItemGroup Condition=" '$(UsingMicrosoftNETSdk)' == 'true' AND '$(EnableDefaultSpecFlowItems)' == 'true' ">
+      <SpecFlowFeatureFile Include="**/*$(DefaultSpecFlowFeatureExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="GenerateSpecFlowFeatureFiles" Inputs="@(SpecFlowFeatureFile)" Outputs="@(SpecFlowFeatureFile->'%(Identity).cs')">
+    <!-- TODO: This task ends up reading the msbuild project to get settings. Pass them in instead. -->
+    <SpecFlowCompile ShowTrace="$(SpecFlowTrace)"
+                     VerboseOutput="$(SpecFlowVerbose)"
+                     ProjectPath="$(MSBuildProjectFullPath)"
+                     FeatureFiles="@(SpecFlowFeatureFile)">
+      <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFile" />
+    </SpecFlowCompile>
+  </Target>
+
+  <Target Name="AddSpecFlowGeneratedFeatureFiles">
+    <ItemGroup>
+      <!-- Deduplicate the generated files from the ones picked up directly by the default glob -->
+      <Compile Remove="@(SpecFlowFeatureFile->'%(Identity).cs')" />
+      <Compile Include="@(SpecFlowFeatureFile->'%(Identity).cs')">
+        <Visible>false</Visible>
+      </Compile>
+      <FileWrite Include="@(SpecFlowFeatureFile->'%(Identity).cs')" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CleanSpecFlowGeneratedFeatureFiles">
+    <Delete Files="**/*$(DefaultSpecFlowFeatureExtension)" ContinueOnError="true" />
+  </Target>
+
+</Project>
