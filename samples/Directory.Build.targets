@@ -1,0 +1,16 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- This ensures that msbuild will rebuild this project if the props/targets file changes -->
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <Import Project="..\Directory.Build.targets" />
+
+  <Import Project="$(RepoRoot)src\SpecFlow.Build.Tasks\build\SpecFlow.Sdk.targets"
+          Condition="Exists('$(RepoRoot)src\SpecFlow.Build.Tasks\build\SpecFlow.Sdk.targets')" />
+
+  <Import Project="$(RepoRoot)src\SpecFlow.Build.SpecRun\build\SpecFlow.Build.SpecRun.targets"
+          Condition="Exists('$(RepoRoot)src\SpecFlow.Build.SpecRun\build\SpecFlow.Build.SpecRun.targets')" />
+
+</Project>

@@ -13,6 +13,8 @@
   <!-- Default item includes (globs and implicit references) -->
   <Import Project="SpecFlow.Sdk.DefaultItems.targets" />
 
+  <UsingTask TaskName="SpecFlow.Build.Tasks.GenerateSpecFlowFeatureFiles" AssemblyFile="$(SpecFlowBuildTasksAssembly)" />
+
   <PropertyGroup>
     <BuildDependsOn>
       CollectSpecFlowFeatureFiles;
@@ -34,12 +36,12 @@
 
   <Target Name="GenerateSpecFlowFeatureFiles" Inputs="@(SpecFlowFeatureFile)" Outputs="@(SpecFlowFeatureFile->'%(Identity).cs')">
     <!-- TODO: This task ends up reading the msbuild project to get settings. Pass them in instead. -->
-    <SpecFlowCompile ShowTrace="$(SpecFlowTrace)"
-                     VerboseOutput="$(SpecFlowVerbose)"
-                     ProjectPath="$(MSBuildProjectFullPath)"
-                     FeatureFiles="@(SpecFlowFeatureFile)">
+    <GenerateSpecFlowFeatureFiles ShowTrace="$(SpecFlowTrace)"
+                                  VerboseOutput="$(SpecFlowVerbose)"
+                                  ProjectPath="$(MSBuildProjectFullPath)"
+                                  FeatureFiles="@(SpecFlowFeatureFile)">
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFile" />
-    </SpecFlowCompile>
+    </GenerateSpecFlowFeatureFiles>
   </Target>
 
   <Target Name="AddSpecFlowGeneratedFeatureFiles">
@@ -54,7 +56,7 @@
   </Target>
 
   <Target Name="CleanSpecFlowGeneratedFeatureFiles">
-    <Delete Files="**/*$(DefaultSpecFlowFeatureExtension)" ContinueOnError="true" />
+    <Delete Files="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" ContinueOnError="true" />
   </Target>
 
 </Project>

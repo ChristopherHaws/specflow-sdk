@@ -1,6 +1,11 @@
 <Project>
 
   <PropertyGroup>
+    <!-- This ensures that msbuild will rebuild this project if the props/targets file changes -->
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <!-- https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build -->
     <!-- http://blog.paranoidcoding.com/2016/04/05/deterministic-builds-in-roslyn.html -->
     <Deterministic>true</Deterministic>
@@ -20,6 +25,8 @@
     <RepositoryUrl Condition=" '$(BUILD_REPOSITORY_URI)' != '' ">$(BUILD_REPOSITORY_URI)</RepositoryUrl>
     <PackageProjectUrl Condition=" '$(BUILD_REPOSITORY_URI)' != '' ">$(BUILD_REPOSITORY_URI)</PackageProjectUrl>
     <NeutralLanguage>en</NeutralLanguage>
+
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
 
     <!--
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

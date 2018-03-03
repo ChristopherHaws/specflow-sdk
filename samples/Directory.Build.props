@@ -1,0 +1,25 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- This ensures that msbuild will rebuild this project if the props/targets file changes -->
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <Import Project="..\Directory.Build.props" />
+
+  <PropertyGroup>
+    <!--
+    Prevents Visual Studio's instance of MSBuild from locking SpecFlow.Build.Tasks.dll.
+    This is only needed because we are building the dll in the same solution we are using it in.
+    -->
+    <GenerateResourceNeverLockTypeAssemblies>true</GenerateResourceNeverLockTypeAssemblies>
+    <SpecFlowBuildTasksDirectory>$(RepoRoot)src\SpecFlow.Build.Tasks\bin\$(Configuration)\net46\</SpecFlowBuildTasksDirectory>
+  </PropertyGroup>
+
+  <Import Project="$(RepoRoot)src\SpecFlow.Build.Tasks\build\SpecFlow.Sdk.props"
+          Condition="Exists('$(RepoRoot)src\SpecFlow.Build.Tasks\build\SpecFlow.Sdk.props')" />
+
+  <Import Project="$(RepoRoot)src\SpecFlow.Build.SpecRun\build\SpecFlow.Build.SpecRun.props"
+          Condition="Exists('$(RepoRoot)src\SpecFlow.Build.SpecRun\build\SpecFlow.Build.SpecRun.props')" />
+
+</Project>

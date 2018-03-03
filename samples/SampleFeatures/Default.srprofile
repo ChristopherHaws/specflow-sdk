@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestProfile xmlns="http://www.specrun.com/schemas/2011/09/TestProfile">
+
+  <Settings name="SampleFeatures" projectName="SampleFeatures" projectId="{D3BB904B-5952-48CF-AA6D-928DAF51C44F}" />
+  <Execution stopAfterFailures="0" retryCount="0" testThreadCount="4" testSchedulingMode="Random"/>
+
+  <TestAssemblyPaths>
+    <TestAssemblyPath>SampleFeatures.dll</TestAssemblyPath>
+  </TestAssemblyPaths>
+
+</TestProfile>

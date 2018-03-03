@@ -13,7 +13,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Build.Tasks
 {
-	public class SpecFlowCompile : SpecFlowTask
+	public class GenerateSpecFlowFeatureFiles : SpecFlowTask
 	{
 		private readonly List<ITaskItem> generatedFiles = new List<ITaskItem>();
 

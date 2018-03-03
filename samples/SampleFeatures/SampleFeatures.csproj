@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+    <NoWarn>CS0649</NoWarn>
+    <SpecFlowTrace>true</SpecFlowTrace>
+    <SpecFlowVerbose>true</SpecFlowVerbose>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
+    <PackageReference Include="SpecFlow" Version="2.3.1" />
+    <PackageReference Include="SpecRun.SpecFlow.2-3-0" Version="1.7.0" />
+    <PackageReference Include="FluentAssertions" Version="5.1.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SpecFlow.Build.Tasks\SpecFlow.Build.Tasks.csproj" />
+    <ProjectReference Include="..\..\src\SpecFlow.Build.SpecRun\SpecFlow.Build.SpecRun.csproj" />
+  </ItemGroup>
+
+</Project>

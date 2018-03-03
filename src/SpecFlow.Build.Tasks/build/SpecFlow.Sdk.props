@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <SpecFlowBuildTasksDirectory>$(MSBuildThisFileDirectory)..\tools\</SpecFlowBuildTasksDirectory>
-    <SpecFlowBuildTasksAssembly>$(SpecFlowBuildTasksDirectory)Arvato.Automation.SpecFlow.MsBuild.dll</SpecFlowBuildTasksAssembly>
+    <SpecFlowBuildTasksDirectory Condition=" '$(SpecFlowBuildTasksDirectory)' == '' ">$(MSBuildThisFileDirectory)..\tools\</SpecFlowBuildTasksDirectory>
+    <SpecFlowBuildTasksAssembly Condition=" '$(SpecFlowBuildTasksAssembly)' == '' ">$(SpecFlowBuildTasksDirectory)SpecFlow.Build.Tasks.dll</SpecFlowBuildTasksAssembly>
   </PropertyGroup>
 
   <!-- Default item includes (globs and implicit references) -->
