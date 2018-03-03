@@ -7,6 +7,7 @@
 
   <PropertyGroup>
     <DefaultSpecFlowFeatureExtension Condition=" '$(DefaultSpecFlowFeatureExtension)' == '' ">.feature</DefaultSpecFlowFeatureExtension>
+    <!-- TODO: Make the feature files output file with an extension of '.g.cs' which is a build time generated file convention -->
     <DefaultSpecFlowGeneratedFeatureExtension Condition=" '$(DefaultSpecFlowGeneratedFeatureExtension)' == '' ">$(DefaultSpecFlowFeatureExtension).cs</DefaultSpecFlowGeneratedFeatureExtension>
     <EnableDefaultSpecFlowItems Condition=" '$(EnableDefaultSpecFlowItems)' == '' ">true</EnableDefaultSpecFlowItems>
   </PropertyGroup>

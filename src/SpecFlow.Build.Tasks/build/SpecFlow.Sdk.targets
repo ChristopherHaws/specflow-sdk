@@ -8,6 +8,7 @@
   <PropertyGroup>
     <SpecFlowTrace Condition=" '$(SpecFlowTrace)' == '' ">false</SpecFlowTrace>
     <SpecFlowVerbose Condition=" '$(SpecFlowVerbose)' == '' ">false</SpecFlowVerbose>
+    <SpecFlowIntermediateOutputPath Condition=" '$(SpecFlowIntermediateOutputPath)' == '' ">$(IntermediateOutputPath)specflow\</SpecFlowIntermediateOutputPath>
   </PropertyGroup>
 
   <!-- Default item includes (globs and implicit references) -->
@@ -17,7 +18,6 @@
 
   <PropertyGroup>
     <BuildDependsOn>
-      CollectSpecFlowFeatureFiles;
       GenerateSpecFlowFeatureFiles;
       AddSpecFlowGeneratedFeatureFiles;
       $(BuildDependsOn);
@@ -27,12 +27,6 @@
       $(CleanDependsOn);
     </CleanDependsOn>
   </PropertyGroup>
-
-  <Target Name="CollectSpecFlowFeatureFiles">
-    <ItemGroup Condition=" '$(UsingMicrosoftNETSdk)' == 'true' AND '$(EnableDefaultSpecFlowItems)' == 'true' ">
-      <SpecFlowFeatureFile Include="**/*$(DefaultSpecFlowFeatureExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    </ItemGroup>
-  </Target>
 
   <Target Name="GenerateSpecFlowFeatureFiles" Inputs="@(SpecFlowFeatureFile)" Outputs="@(SpecFlowFeatureFile->'%(Identity).cs')">
     <!-- TODO: This task ends up reading the msbuild project to get settings. Pass them in instead. -->

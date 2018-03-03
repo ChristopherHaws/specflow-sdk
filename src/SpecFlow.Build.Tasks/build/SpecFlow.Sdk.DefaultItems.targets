@@ -9,4 +9,10 @@
     <Compile Remove="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(UsingMicrosoftNETSdk)' == 'true' AND '$(EnableDefaultSpecFlowItems)' == 'true' ">
+    <SpecFlowFeatureFile Include="**/*$(DefaultSpecFlowFeatureExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <UpToDateCheckInput Include="@(SpecFlowFeatureFile)" />
+    <UpToDateCheckOutput Include="@(SpecFlowFeatureFile->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)%(Extension).g.cs')" />
+  </ItemGroup>
+
 </Project>
