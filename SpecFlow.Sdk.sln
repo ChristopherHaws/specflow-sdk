@@ -14,9 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{
 		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlow.Build.SpecRun", "src\SpecFlow.Build.SpecRun\SpecFlow.Build.SpecRun.csproj", "{1647CDD5-666C-41B3-BF97-2E6168678BFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.Build.SpecRun", "src\SpecFlow.Build.SpecRun\SpecFlow.Build.SpecRun.csproj", "{1647CDD5-666C-41B3-BF97-2E6168678BFE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{1CC4A6F1-B1FC-48B3-8396-07E0710EEEB2}"
 	ProjectSection(SolutionItems) = preProject

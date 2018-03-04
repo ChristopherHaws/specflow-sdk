@@ -6,13 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" />
+    <AvailableItemName Include="SpecFlowFeatureFile" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(UsingMicrosoftNETSdk)' == 'true' AND '$(EnableDefaultSpecFlowItems)' == 'true' ">
+  <ItemGroup Condition=" '$(EnableDefaultSpecFlowItems)' == 'true' ">
+    <Compile Remove="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" />
     <SpecFlowFeatureFile Include="**/*$(DefaultSpecFlowFeatureExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+
+    <!-- This enabled the project to be incrementally built -->
     <UpToDateCheckInput Include="@(SpecFlowFeatureFile)" />
-    <UpToDateCheckOutput Include="@(SpecFlowFeatureFile->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)%(Extension).g.cs')" />
+    <UpToDateCheckOutput Include="@(SpecFlowFeatureFile->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)$(DefaultSpecFlowGeneratedFeatureExtension)')" />
   </ItemGroup>
 
 </Project>
