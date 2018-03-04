@@ -5,8 +5,6 @@
     <NoWarn>CS0649</NoWarn>
     <SpecFlowTrace>true</SpecFlowTrace>
     <SpecFlowVerbose>true</SpecFlowVerbose>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
 
   <ItemGroup>

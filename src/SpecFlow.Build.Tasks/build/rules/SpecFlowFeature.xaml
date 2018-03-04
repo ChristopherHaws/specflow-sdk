@@ -16,6 +16,11 @@
             <Category Name="Misc" DisplayName="Misc" />
         </Rule.Categories>
 
+        <StringProperty Name="Generator"
+                        Category="Advanced"
+                        DisplayName="Custom Tool"
+                        Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
+
         <StringProperty Name="TestAdapter" Category="Advanced" />
 
         <StringProperty Name="Identity"

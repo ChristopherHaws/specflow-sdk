@@ -11,7 +11,6 @@
     <SpecFlowIntermediateOutputPath Condition=" '$(SpecFlowIntermediateOutputPath)' == '' ">$(IntermediateOutputPath)specflow\</SpecFlowIntermediateOutputPath>
   </PropertyGroup>
 
-  <!-- Default item includes (globs and implicit references) -->
   <Import Project="SpecFlow.Sdk.DefaultItems.targets" />
   <Import Project="SpecFlow.Sdk.DesignTime.targets" />
 
