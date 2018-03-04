@@ -11,24 +11,33 @@
     <SpecFlowIntermediateOutputPath Condition=" '$(SpecFlowIntermediateOutputPath)' == '' ">$(IntermediateOutputPath)specflow\</SpecFlowIntermediateOutputPath>
   </PropertyGroup>
 
-  <Import Project="SpecFlow.Sdk.DefaultItems.targets" />
-  <Import Project="SpecFlow.Sdk.DesignTime.targets" />
-
   <UsingTask TaskName="SpecFlow.Build.Tasks.GenerateSpecFlowFeatureFiles" AssemblyFile="$(SpecFlowBuildTasksAssembly)" />
 
   <PropertyGroup>
-    <BuildDependsOn>
-      GenerateSpecFlowFeature;
-      AddSpecFlowGeneratedFeature;
-      $(BuildDependsOn);
-    </BuildDependsOn>
+    <CoreCompileDependsOn>
+      SpecFlowCompile;
+      $(CoreCompileDependsOn);
+    </CoreCompileDependsOn>
     <CleanDependsOn>
-      CleanSpecFlowGeneratedFeature;
+      SpecFlowClean;
       $(CleanDependsOn);
     </CleanDependsOn>
+
+    <SpecFlowCompileDependsOn>
+      $(SpecFlowCompileDependsOn);
+      _GenerateSpecFlowFeature;
+      _AddSpecFlowGeneratedFeature;
+    </SpecFlowCompileDependsOn>
+    <SpecFlowCleanDependsOn>
+      $(SpecFlowCleanDependsOn);
+      _CleanGeneratedSpecFlowFeature;
+    </SpecFlowCleanDependsOn>
   </PropertyGroup>
 
-  <Target Name="GenerateSpecFlowFeature" Inputs="@(SpecFlowFeature)" Outputs="@(SpecFlowFeature->'%(Identity).cs')">
+  <Target Name="SpecFlowCompile" DependsOnTargets="$(SpecFlowCompileDependsOn)">
+  </Target>
+
+  <Target Name="_GenerateSpecFlowFeature" Inputs="@(SpecFlowFeature)" Outputs="@(SpecFlowFeature->'%(Identity).cs')">
     <!-- TODO: This task ends up reading the msbuild project to get settings. Pass them in instead. -->
     <GenerateSpecFlowFeatureFiles ShowTrace="$(SpecFlowTrace)"
                                   VerboseOutput="$(SpecFlowVerbose)"
@@ -36,9 +45,18 @@
                                   FeatureFiles="@(SpecFlowFeature)">
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFile" />
     </GenerateSpecFlowFeatureFiles>
+
+    <ItemGroup>
+      <!-- Deduplicate the generated files from the ones picked up directly by the default glob -->
+      <Compile Remove="@(SpecFlowGeneratedFile)" />
+      <Compile Include="@(SpecFlowGeneratedFile)">
+        <Visible>false</Visible>
+      </Compile>
+      <FileWrite Include="@(SpecFlowGeneratedFile)" />
+    </ItemGroup>
   </Target>
 
-  <Target Name="AddSpecFlowGeneratedFeature">
+  <Target Name="_AddSpecFlowGeneratedFeature">
     <ItemGroup>
       <!-- Deduplicate the generated files from the ones picked up directly by the default glob -->
       <Compile Remove="@(SpecFlowFeature->'%(Identity).cs')" />
@@ -49,8 +67,14 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="CleanSpecFlowGeneratedFeature">
+  <Target Name="SpecFlowClean" DependsOnTargets="$(SpecFlowCleanDependsOn)">
+  </Target>
+
+  <Target Name="_CleanGeneratedSpecFlowFeature">
     <Delete Files="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" ContinueOnError="true" />
   </Target>
+
+  <Import Project="SpecFlow.Sdk.DefaultItems.targets" />
+  <Import Project="SpecFlow.Sdk.DesignTime.targets" />
 
 </Project>

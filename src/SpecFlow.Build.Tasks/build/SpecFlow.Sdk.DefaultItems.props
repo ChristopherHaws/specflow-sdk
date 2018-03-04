@@ -18,7 +18,7 @@
       <TestAdapter></TestAdapter>
       <!-- This is only here to make the files not show up in the csproj. -->
       <!--<Generator>SpecFlowSingleFileGenerator</Generator>-->
-      <!--<Generator>MSBuild:GenerateSourceFromFeature</Generator>-->
+      <Generator>MSBuild:SpecFlowCompile</Generator>
       <!--<OutputPath>$(IntermediateOutputPath)</OutputPath>-->
     </SpecFlowFeature>
   </ItemDefinitionGroup>

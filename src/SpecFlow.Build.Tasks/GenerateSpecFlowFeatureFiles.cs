@@ -95,6 +95,8 @@ namespace SpecFlow.Build.Tasks
 						this.generatedFiles.Add(new TaskItem(featureFile.GetGeneratedTestFullPath(specFlowProject.ProjectSettings)));
 					}
 				}
+
+				this.Log.LogMessage(MessageImportance.High, $"Generated {this.generatedFiles.Count} feature files.");
 			}
 		}
 

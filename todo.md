@@ -1,6 +1,4 @@
 # Todo
-- Raname `SpecFlowFeatureFile` to `SpecFlowFeature`
-- Create a `PropertyPageSchema` for the `SpecFlowFeature` item group. This will allow the feature files to be removed from the `None` item group while still showing up in the solution explorer
 - Modify the generator task to output files to the intermediate directory, and change the file extension to `.feature.g.cs` (configurable)
 - Modify the generator task to take an array of from files and an array of to files
 - Instead of probing for generators, take an array of them from msbuild and then execute the correct one using the info in the `SpecFlowFeature` metadata.
@@ -11,11 +9,12 @@
     - Runtime Plugins
     - Generator Plugins
 - Figure out if it's possible to get codelense to work with feature files
-    - Possibly using a fake line of code in the generated method `var a = nameof(CalculatorSteps.GivenIHaveEntered)`. Problem with this is it wont work without runtime being known, which is should be since it is all part of msbuild now. Then this file gets compiled in `CoreCompileDependsOn` so that it gets added at design compile time.
+    - Possibly using a fake line of code in the generated method `var a = nameof(CalculatorSteps.GivenIHaveEntered)`. Problem with this is it wont work without runtime being known, which is should be since it is all part of msbuild now. Then this file gets compiled in `CoreBuildDependsOn` so that it gets added at design compile time.
 - Figure out if I should add `<Generator>MSBuild:GenerateSpecFlowFeatureFile</Generator>` to each `SpecFlowFeature`
 - Figure out if I can make `AddSpecFlowGeneratedFeatureFiles` use the `SpecFlowGeneratedFile` items instead of the `SpecFlowFeature` items
 - Create unit tests
 - Create integration tests
+- Create a generator plugin that marks the generated classes with `[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]` so they arent visible in intellisense
 
 ## Research
 - `ImportProjectExtensionProps` and `ImportProjectExtensionTargets`
