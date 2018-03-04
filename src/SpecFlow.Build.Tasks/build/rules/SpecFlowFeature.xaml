@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+    <Rule xmlns="http://schemas.microsoft.com/build/2009/properties"
+      Name="SpecFlowFeature"
+      DisplayName="SpecFlow Feature"
+      PageTemplate="generic"
+      Description="SpecFlow Feature">
+
+        <Rule.DataSource>
+            <DataSource Persistence="ProjectFile" ItemType="SpecFlowFeature" />
+        </Rule.DataSource>
+
+        <Rule.Categories>
+            <Category Name="Advanced" DisplayName="Advanced" />
+            <Category Name="Misc" DisplayName="Misc" />
+        </Rule.Categories>
+
+        <StringProperty Name="TestAdapter" Category="Advanced" />
+
+        <StringProperty Name="Identity"
+                        Visible="false"
+                        ReadOnly="true"
+                        Category="Misc"
+                        Description="The item specified in the Include attribute.">
+            <StringProperty.DataSource>
+                <DataSource Persistence="Intrinsic" ItemType="SpecFlowFeature" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+            </StringProperty.DataSource>
+        </StringProperty>
+
+        <StringProperty Name="FullPath"
+                        DisplayName="Full Path"
+                        ReadOnly="true"
+                        Category="Misc"
+                        Description="Location of the file.">
+            <StringProperty.DataSource>
+                <DataSource Persistence="Intrinsic" ItemType="SpecFlowFeature" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+            </StringProperty.DataSource>
+        </StringProperty>
+
+        <StringProperty Name="FileNameAndExtension"
+                        DisplayName="File Name"
+                        ReadOnly="true"
+                        Category="Misc"
+                        Description="Name of the file or folder.">
+            <StringProperty.DataSource>
+                <DataSource Persistence="Intrinsic" ItemType="SpecFlowFeature" PersistedName="FileNameAndExtension" />
+            </StringProperty.DataSource>
+        </StringProperty>
+
+    </Rule>
+
+    <ContentType Name="SpecFlowFeature" DisplayName="SpecFlow Feature" ItemType="SpecFlowFeature" />
+    <ItemType Name="SpecFlowFeature" DisplayName="SpecFlow Feature" />
+    <FileExtension Name=".feature" ContentType="SpecFlowFeature" />
+
+</ProjectSchemaDefinitions>

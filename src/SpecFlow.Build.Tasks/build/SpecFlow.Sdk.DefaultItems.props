@@ -12,4 +12,13 @@
     <EnableDefaultSpecFlowItems Condition=" '$(EnableDefaultSpecFlowItems)' == '' ">true</EnableDefaultSpecFlowItems>
   </PropertyGroup>
 
+  <ItemDefinitionGroup>
+    <SpecFlowFeature>
+      <Namespace>$(RootNamespace)</Namespace>
+      <TestAdapter></TestAdapter>
+      <!--<Generator>MSBuild:GenerateSourceFromFeature</Generator>-->
+      <!--<OutputPath>$(IntermediateOutputPath)</OutputPath>-->
+    </SpecFlowFeature>
+  </ItemDefinitionGroup>
+
 </Project>

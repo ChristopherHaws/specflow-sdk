@@ -12,5 +12,6 @@
 
   <!-- Default item includes (globs and implicit references) -->
   <Import Project="SpecFlow.Sdk.DefaultItems.props" />
+  <Import Project="SpecFlow.Sdk.DesignTime.props" />
 
 </Project>

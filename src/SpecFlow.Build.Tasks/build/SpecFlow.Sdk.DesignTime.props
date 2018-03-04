@@ -1,0 +1,19 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <!-- This ensures that msbuild will rebuild this project if the props/targets file changes -->
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+    CPS style item type support. This ensures that the SpecFlowFeature's show up in the solution exploerer. This
+    also ensures that when adding a .feature file, they get added to the project as a SpecFlowFeature item type.
+    -->
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)rules/SpecFlowFeature.xaml" />
+
+    <!-- C# project system style item type support-->
+    <AvailableItemName Include="SpecFlowFeature" />
+  </ItemGroup>
+
+</Project>

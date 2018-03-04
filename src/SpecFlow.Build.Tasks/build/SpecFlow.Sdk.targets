@@ -13,43 +13,44 @@
 
   <!-- Default item includes (globs and implicit references) -->
   <Import Project="SpecFlow.Sdk.DefaultItems.targets" />
+  <Import Project="SpecFlow.Sdk.DesignTime.targets" />
 
   <UsingTask TaskName="SpecFlow.Build.Tasks.GenerateSpecFlowFeatureFiles" AssemblyFile="$(SpecFlowBuildTasksAssembly)" />
 
   <PropertyGroup>
     <BuildDependsOn>
-      GenerateSpecFlowFeatureFiles;
-      AddSpecFlowGeneratedFeatureFiles;
+      GenerateSpecFlowFeature;
+      AddSpecFlowGeneratedFeature;
       $(BuildDependsOn);
     </BuildDependsOn>
     <CleanDependsOn>
-      CleanSpecFlowGeneratedFeatureFiles;
+      CleanSpecFlowGeneratedFeature;
       $(CleanDependsOn);
     </CleanDependsOn>
   </PropertyGroup>
 
-  <Target Name="GenerateSpecFlowFeatureFiles" Inputs="@(SpecFlowFeatureFile)" Outputs="@(SpecFlowFeatureFile->'%(Identity).cs')">
+  <Target Name="GenerateSpecFlowFeature" Inputs="@(SpecFlowFeature)" Outputs="@(SpecFlowFeature->'%(Identity).cs')">
     <!-- TODO: This task ends up reading the msbuild project to get settings. Pass them in instead. -->
     <GenerateSpecFlowFeatureFiles ShowTrace="$(SpecFlowTrace)"
                                   VerboseOutput="$(SpecFlowVerbose)"
                                   ProjectPath="$(MSBuildProjectFullPath)"
-                                  FeatureFiles="@(SpecFlowFeatureFile)">
+                                  FeatureFiles="@(SpecFlowFeature)">
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFile" />
     </GenerateSpecFlowFeatureFiles>
   </Target>
 
-  <Target Name="AddSpecFlowGeneratedFeatureFiles">
+  <Target Name="AddSpecFlowGeneratedFeature">
     <ItemGroup>
       <!-- Deduplicate the generated files from the ones picked up directly by the default glob -->
-      <Compile Remove="@(SpecFlowFeatureFile->'%(Identity).cs')" />
-      <Compile Include="@(SpecFlowFeatureFile->'%(Identity).cs')">
+      <Compile Remove="@(SpecFlowFeature->'%(Identity).cs')" />
+      <Compile Include="@(SpecFlowFeature->'%(Identity).cs')">
         <Visible>false</Visible>
       </Compile>
-      <FileWrite Include="@(SpecFlowFeatureFile->'%(Identity).cs')" />
+      <FileWrite Include="@(SpecFlowFeature->'%(Identity).cs')" />
     </ItemGroup>
   </Target>
 
-  <Target Name="CleanSpecFlowGeneratedFeatureFiles">
+  <Target Name="CleanSpecFlowGeneratedFeature">
     <Delete Files="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" ContinueOnError="true" />
   </Target>
 
