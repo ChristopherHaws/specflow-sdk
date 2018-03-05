@@ -4,7 +4,7 @@
     <TargetFramework>net46</TargetFramework>
     <NoWarn>CS0649</NoWarn>
     <SpecFlowTrace>true</SpecFlowTrace>
-    <SpecFlowVerbose>true</SpecFlowVerbose>
+    <SpecFlowDebugGenerator>false</SpecFlowDebugGenerator>
   </PropertyGroup>
 
   <ItemGroup>

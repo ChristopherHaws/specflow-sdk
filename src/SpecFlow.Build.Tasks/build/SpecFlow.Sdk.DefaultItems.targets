@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(EnableDefaultSpecFlowItems)' == 'true' ">
-    <None Remove="**/*$(DefaultSpecFlowFeatureExtension)" />
-    <Compile Remove="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" />
+    <!--<None Remove="**/*$(DefaultSpecFlowFeatureExtension)" />-->
+    <!--<Compile Remove="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" />-->
     <SpecFlowFeature Include="**/*$(DefaultSpecFlowFeatureExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
 
     <!-- This enabled the project to be incrementally built -->

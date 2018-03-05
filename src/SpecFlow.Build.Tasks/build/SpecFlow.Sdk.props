@@ -8,6 +8,7 @@
   <PropertyGroup>
     <SpecFlowBuildTasksDirectory Condition=" '$(SpecFlowBuildTasksDirectory)' == '' ">$(MSBuildThisFileDirectory)..\tools\</SpecFlowBuildTasksDirectory>
     <SpecFlowBuildTasksAssembly Condition=" '$(SpecFlowBuildTasksAssembly)' == '' ">$(SpecFlowBuildTasksDirectory)SpecFlow.Build.Tasks.dll</SpecFlowBuildTasksAssembly>
+    <SpecFlowDebugGenerator Condition=" '$(SpecFlowDebugGenerator)' == '' ">false</SpecFlowDebugGenerator>
   </PropertyGroup>
 
   <Import Project="SpecFlow.Sdk.DesignTime.props" />

@@ -37,33 +37,25 @@
   <Target Name="SpecFlowCompile" DependsOnTargets="$(SpecFlowCompileDependsOn)">
   </Target>
 
-  <Target Name="_GenerateSpecFlowFeature" Inputs="@(SpecFlowFeature)" Outputs="@(SpecFlowFeature->'%(Identity).cs')">
+  <Target Name="_GenerateSpecFlowFeature" Inputs="@(SpecFlowFeature)" Outputs="@(SpecFlowFeature->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)$(DefaultSpecFlowGeneratedFeatureExtension)')">
     <!-- TODO: This task ends up reading the msbuild project to get settings. Pass them in instead. -->
     <GenerateSpecFlowFeatureFiles ShowTrace="$(SpecFlowTrace)"
-                                  VerboseOutput="$(SpecFlowVerbose)"
                                   ProjectPath="$(MSBuildProjectFullPath)"
-                                  FeatureFiles="@(SpecFlowFeature)">
+                                  FeatureFiles="@(SpecFlowFeature)"
+                                  FeatureGeneratedFiles="@(SpecFlowFeature->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)$(DefaultSpecFlowGeneratedFeatureExtension)')"
+                                  LaunchDebugger="$(SpecFlowDebugGenerator)">
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFile" />
     </GenerateSpecFlowFeatureFiles>
-
-    <ItemGroup>
-      <!-- Deduplicate the generated files from the ones picked up directly by the default glob -->
-      <Compile Remove="@(SpecFlowGeneratedFile)" />
-      <Compile Include="@(SpecFlowGeneratedFile)">
-        <Visible>false</Visible>
-      </Compile>
-      <FileWrite Include="@(SpecFlowGeneratedFile)" />
-    </ItemGroup>
   </Target>
 
   <Target Name="_AddSpecFlowGeneratedFeature">
     <ItemGroup>
       <!-- Deduplicate the generated files from the ones picked up directly by the default glob -->
-      <Compile Remove="@(SpecFlowFeature->'%(Identity).cs')" />
-      <Compile Include="@(SpecFlowFeature->'%(Identity).cs')">
+      <Compile Remove="@(SpecFlowFeature->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)$(DefaultSpecFlowGeneratedFeatureExtension)')" />
+      <Compile Include="@(SpecFlowFeature->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)$(DefaultSpecFlowGeneratedFeatureExtension)')">
         <Visible>false</Visible>
       </Compile>
-      <FileWrite Include="@(SpecFlowFeature->'%(Identity).cs')" />
+      <FileWrite Include="@(SpecFlowFeature->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)$(DefaultSpecFlowGeneratedFeatureExtension)')" />
     </ItemGroup>
   </Target>
 
@@ -71,7 +63,10 @@
   </Target>
 
   <Target Name="_CleanGeneratedSpecFlowFeature">
-    <Delete Files="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" ContinueOnError="true" />
+    <!--<ItemGroup>
+      <_SpecFlowGeneratedFeatureToDelete Include="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" />
+    </ItemGroup>
+    <Delete Files="@(_SpecFlowGeneratedFeatureToDelete)" ContinueOnError="true" />-->
   </Target>
 
   <Import Project="SpecFlow.Sdk.DefaultItems.targets" />

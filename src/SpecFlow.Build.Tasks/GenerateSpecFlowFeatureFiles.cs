@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Plugins;
-using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Build.Tasks
@@ -17,7 +17,7 @@ namespace SpecFlow.Build.Tasks
 	{
 		private readonly List<ITaskItem> generatedFiles = new List<ITaskItem>();
 
-		public Boolean VerboseOutput { get; set; }
+		public Boolean LaunchDebugger { get; set; }
 
 		[Required]
 		public String ProjectPath { get; set; }
@@ -28,6 +28,9 @@ namespace SpecFlow.Build.Tasks
 		[Required]
 		public ITaskItem[] FeatureFiles { get; set; }
 
+		[Required]
+		public ITaskItem[] FeatureGeneratedFiles { get; set; }
+
 		/// <summary>
 		/// Gets the generated feature files that have had been transpiled.
 		/// </summary>
@@ -36,11 +39,10 @@ namespace SpecFlow.Build.Tasks
 
 		protected override void DoExecute()
 		{
-			//System.Diagnostics.Debugger.Launch();
-
-			var traceListener = this.VerboseOutput
-				? (TechTalk.SpecFlow.Tracing.ITraceListener)new TechTalk.SpecFlow.Tracing.TextWriterTraceListener(GetMessageWriter(MessageImportance.High), "SpecFlow: ")
-				: new NullListener();
+			if (this.LaunchDebugger)
+			{
+				Debugger.Launch();
+			}
 
 			var specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(this.ProjectPath);
 			specFlowProject.ProjectSettings.ConfigurationHolder = new SpecFlowConfigurationHolder(
@@ -50,31 +52,53 @@ namespace SpecFlow.Build.Tasks
 
 			FixPluginPaths(specFlowProject.Configuration.SpecFlowConfiguration);
 
-			traceListener.WriteToolOutput("Processing project: " + specFlowProject.ProjectSettings.ProjectName);
+			this.Log.LogMessage(MessageImportance.Normal, $"SpecFlow: Processing project: {specFlowProject.ProjectSettings.ProjectName}");
 			var generationSettings = new GenerationSettings
 			{
 				CheckUpToDate = false,
-				WriteResultToFile = true
+				WriteResultToFile = false
 			};
 
 			using (var container = GeneratorContainerBuilder.CreateContainer(specFlowProject.ProjectSettings.ConfigurationHolder, specFlowProject.ProjectSettings))
 			using (var generator = container.Resolve<ITestGenerator>())
 			{
-				traceListener.WriteToolOutput("Using Generator: {0}", generator.GetType().FullName);
+				var sw = Stopwatch.StartNew();
 
-				var featureFiles = this.FeatureFiles
-					.Select(x => new FeatureFileInput(FileSystemHelper.GetRelativePath(x.ItemSpec, specFlowProject.ProjectSettings.ProjectFolder)))
-					.ToList();
+				this.Log.LogMessage(MessageImportance.Normal, $"SpecFlow: Using Generator {generator.GetType().FullName}");
 
-				foreach (var featureFile in featureFiles)
+				for (var i = 0; i < this.FeatureFiles.Length; i++)
 				{
-					var outputFilePath = generator.GetTestFullPath(featureFile);
-					featureFile.GeneratedTestProjectRelativePath = FileSystemHelper.GetRelativePath(outputFilePath, specFlowProject.ProjectSettings.ProjectFolder);
+					var inputItem = this.FeatureFiles[i];
+					var outputItem = this.FeatureGeneratedFiles[i];
+
+					var featureRelativePath = FileSystemHelper.GetRelativePath(inputItem.ItemSpec, specFlowProject.ProjectSettings.ProjectFolder);
+					var generatedFeatureRelativePath = FileSystemHelper.GetRelativePath(inputItem.ItemSpec, Path.GetDirectoryName(outputItem.ItemSpec));
+
+					var featureFile = new FeatureFileInput(featureRelativePath);
+
+					//var outputFilePath = generator.GetTestFullPath(featureFile);
+					//featureFile.GeneratedTestProjectRelativePath = FileSystemHelper.GetRelativePath(outputFilePath, specFlowProject.ProjectSettings.ProjectFolder);
 
 					var generationResult = generator.GenerateTestFile(featureFile, generationSettings);
+
+					if (generationResult.Success)
+					{
+						var outputDirectory = Path.GetDirectoryName(outputItem.ItemSpec);
+						if (!Directory.Exists(outputDirectory))
+						{
+							Directory.CreateDirectory(outputDirectory);
+						}
+
+						//HACK
+						var code = generationResult.GeneratedTestCode.Replace($@"""{featureRelativePath}""", $@"""{generatedFeatureRelativePath}""");
+
+						File.WriteAllText(outputItem.ItemSpec, code, Encoding.UTF8);
+						this.generatedFiles.Add(outputItem);
+					}
+
 					if (!generationResult.Success)
 					{
-						traceListener.WriteToolOutput("{0} -> test generation failed", featureFile.ProjectRelativePath);
+						this.Log.LogMessage(MessageImportance.High, $"SpecFlow: {featureFile.ProjectRelativePath} -> test generation failed");
 
 						foreach (var testGenerationError in generationResult.Errors)
 						{
@@ -83,20 +107,17 @@ namespace SpecFlow.Build.Tasks
 					}
 					else if (generationResult.IsUpToDate)
 					{
-						traceListener.WriteToolOutput("{0} -> test up-to-date", featureFile.ProjectRelativePath);
+						this.Log.LogMessage(MessageImportance.Normal, $"SpecFlow: {featureFile.ProjectRelativePath} -> test up-to-date");
 					}
 					else
 					{
-						traceListener.WriteToolOutput("{0} -> test updated", featureFile.ProjectRelativePath);
-					}
-
-					if (generationResult.Success)
-					{
-						this.generatedFiles.Add(new TaskItem(featureFile.GetGeneratedTestFullPath(specFlowProject.ProjectSettings)));
+						this.Log.LogMessage(MessageImportance.Normal, $"SpecFlow: {featureFile.ProjectRelativePath} -> test updated");
 					}
 				}
 
-				this.Log.LogMessage(MessageImportance.High, $"Generated {this.generatedFiles.Count} feature files.");
+				sw.Stop();
+
+				this.Log.LogMessage(MessageImportance.High, $"SpecFlow: Generated {this.generatedFiles.Count} feature files in {sw.ElapsedMilliseconds}ms.");
 			}
 		}
 
