@@ -45,15 +45,6 @@
                                   FeatureFiles="@(SpecFlowFeature)">
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFile" />
     </GenerateSpecFlowFeatureFiles>
-
-    <ItemGroup>
-      <!-- Deduplicate the generated files from the ones picked up directly by the default glob -->
-      <Compile Remove="@(SpecFlowGeneratedFile)" />
-      <Compile Include="@(SpecFlowGeneratedFile)">
-        <Visible>false</Visible>
-      </Compile>
-      <FileWrite Include="@(SpecFlowGeneratedFile)" />
-    </ItemGroup>
   </Target>
 
   <Target Name="_AddSpecFlowGeneratedFeature">
@@ -71,7 +62,10 @@
   </Target>
 
   <Target Name="_CleanGeneratedSpecFlowFeature">
-    <Delete Files="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" ContinueOnError="true" />
+    <ItemGroup>
+      <_SpecFlowGeneratedFeatureToDelete Include="**/*$(DefaultSpecFlowGeneratedFeatureExtension)" />
+    </ItemGroup>
+    <Delete Files="@(_SpecFlowGeneratedFeatureToDelete)" ContinueOnError="true" />
   </Target>
 
   <Import Project="SpecFlow.Sdk.DefaultItems.targets" />
