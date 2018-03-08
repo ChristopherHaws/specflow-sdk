@@ -18,13 +18,15 @@
     <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(PreReleaseVersionLabel)-$(BUILD_BUILDNUMBER)</VersionSuffix>
     <Version Condition=" '$(VersionSuffix)' != '' ">$(VersionPrefix)-$(VersionSuffix)</Version>
     <Version Condition=" '$(Version)' == '' ">$(VersionPrefix)</Version>
+    <InformationalVersion Condition=" '$(APPVEYOR_REPO_COMMIT)' != '' ">$(Version) - Commit Hash: $(APPVEYOR_REPO_COMMIT)</InformationalVersion>
     <InformationalVersion Condition=" '$(BUILD_SOURCEVERSION)' != '' ">$(Version) - Commit Hash: $(BUILD_SOURCEVERSION)</InformationalVersion>
 
     <Authors>Christopher.Haws</Authors>
     <Company>Christopher.Haws</Company>
     <RepositoryType>git</RepositoryType>
+    <RepositoryUrl Condition=" '$(APPVEYOR_REPO_URL)' != '' ">$(APPVEYOR_REPO_URL)</RepositoryUrl>
     <RepositoryUrl Condition=" '$(BUILD_REPOSITORY_URI)' != '' ">$(BUILD_REPOSITORY_URI)</RepositoryUrl>
-    <PackageProjectUrl Condition=" '$(BUILD_REPOSITORY_URI)' != '' ">$(BUILD_REPOSITORY_URI)</PackageProjectUrl>
+    <PackageProjectUrl Condition=" '$(RepositoryUrl)' != '' ">$(RepositoryUrl)</PackageProjectUrl>
     <NeutralLanguage>en</NeutralLanguage>
 
     <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
