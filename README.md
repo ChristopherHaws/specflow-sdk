@@ -1,5 +1,7 @@
-# SpecFlow.Sdk Prototype
+# SpecFlow.Sdk Prototype 
 This is a prototype nuget package that provides SpecFlow integration with SDK based projects.
+
+[![Build status](https://ci.appveyor.com/api/projects/status/2c7k3ucgh751e6do/branch/master?svg=true)](https://ci.appveyor.com/project/ChristopherHaws/specflow-sdk/branch/master)
 
 ## Features
 - [X] Works with SDK based projects
