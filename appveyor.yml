@@ -7,9 +7,11 @@ platform: Any CPU
 before_build:
 - appveyor-retry dotnet restore -v Minimal
 build_script:
-- dotnet build SpecFlow.Sdk.sln
+- dotnet build src/**/*.csproj
+#- dotnet build SpecFlow.Sdk.sln
 after_build:
-- dotnet pack SpecFlow.Sdk.sln -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack src/**/*.csproj --no-build
+#- dotnet pack SpecFlow.Sdk.sln -c %CONFIGURATION% --no-build -o artifacts
 #test_script:
 #- dotnet test SpecFlow.Sdk.sln -c %CONFIGURATION%
 artifacts:
