@@ -2,26 +2,36 @@ version: '1.0.{build}'
 image: Visual Studio 2017 Preview
 configuration: Release
 platform: Any CPU
+
 nuget:
   disable_publish_on_pr: true
+
 build:
   verbosity: minimal
+
 environment:
   APPVEYOR_REPO_URL: https://github.com/ChristopherHaws/specflow-sdk.git
+
 before_build:
 - appveyor-retry dotnet restore -v Minimal
+
 build_script:
 - dotnet build src\SpecFlow.Build.SpecRun\SpecFlow.Build.SpecRun.csproj
 - dotnet build src\SpecFlow.Build.Tasks\SpecFlow.Build.Tasks.csproj
 #- dotnet build SpecFlow.Sdk.sln
+
 after_build:
 - dotnet pack src\SpecFlow.Build.SpecRun\SpecFlow.Build.SpecRun.csproj --no-build
 - dotnet pack src\SpecFlow.Build.Tasks\SpecFlow.Build.Tasks.csproj --no-build
 #- dotnet pack SpecFlow.Sdk.sln -c %CONFIGURATION% --no-build -o artifacts
+
 #test_script:
 #- dotnet test SpecFlow.Sdk.sln -c %CONFIGURATION%
+
 artifacts:
 - path: artifacts\**\*.*
+
 cache:
 - '%USERPROFILE%\.nuget\packages'
+
 #on_finish:
