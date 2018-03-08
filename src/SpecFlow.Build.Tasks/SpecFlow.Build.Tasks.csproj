@@ -32,11 +32,6 @@
     <Content Include="build\**\*" PackagePath="build" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="build\SpecFlow.Sdk.DesignTime.props" />
-    <None Remove="build\SpecFlow.Sdk.DesignTime.targets" />
-  </ItemGroup>
-
   <!-- Ensures that dependent assemblies are packaged with this nuget package -->
   <Target Name="PackDependentAssemblies" DependsOnTargets="Publish">
     <ItemGroup>
