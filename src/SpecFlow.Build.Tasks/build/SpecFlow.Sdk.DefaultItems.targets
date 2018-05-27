@@ -12,7 +12,9 @@
 
     <!-- This enabled the project to be incrementally built -->
     <UpToDateCheckInput Include="@(SpecFlowFeature)" />
-    <UpToDateCheckOutput Include="@(SpecFlowFeature->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)$(DefaultSpecFlowGeneratedFeatureExtension)')" />
+    <UpToDateCheckOutput Include="@(SpecFlowFeature->'%(Identity).cs')" />
+    <!-- Once we enable intermediate output path support, this will be used... -->
+    <!--<UpToDateCheckOutput Include="@(SpecFlowFeature->'$(SpecFlowIntermediateOutputPath)%(RecursiveDir)%(Filename)$(DefaultSpecFlowGeneratedFeatureExtension)')" />-->
   </ItemGroup>
 
 </Project>
