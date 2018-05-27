@@ -12,10 +12,12 @@
     <LangVersion>Latest</LangVersion>
 
     <Product>SpecFlow</Product>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>1.0.1</VersionPrefix>
     <PreReleaseVersionLabel>ci</PreReleaseVersionLabel>
-    <VersionSuffix Condition=" '$(APPVEYOR_BUILD_NUMBER)' != '' ">$(PreReleaseVersionLabel)-$(APPVEYOR_BUILD_NUMBER)</VersionSuffix>
-    <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(PreReleaseVersionLabel)-$(BUILD_BUILDNUMBER)</VersionSuffix>
+    <BuildVersion Condition=" '$(BuildVersion)' == '' ">$(APPVEYOR_BUILD_NUMBER)</BuildVersion>
+    <BuildVersion Condition=" '$(BuildVersion)' == '' ">$(BUILD_BUILDNUMBER)</BuildVersion>
+    <BuildVersion Condition=" '$(BuildVersion)' != '' ">$([System.String]::Copy('$(BuildVersion)').PadLeft( 7, '0' ))</BuildVersion>
+    <VersionSuffix Condition=" '$(BuildVersion)' != '' ">$(PreReleaseVersionLabel)-$(BuildVersion)</VersionSuffix>
     <Version Condition=" '$(VersionSuffix)' != '' ">$(VersionPrefix)-$(VersionSuffix)</Version>
     <Version Condition=" '$(Version)' == '' ">$(VersionPrefix)</Version>
     <InformationalVersion Condition=" '$(APPVEYOR_REPO_COMMIT)' != '' ">$(Version) - Commit Hash: $(APPVEYOR_REPO_COMMIT)</InformationalVersion>
