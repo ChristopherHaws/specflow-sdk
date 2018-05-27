@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <PackageId>SpecFlow.Sdk</PackageId>
@@ -15,9 +15,9 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.6.82" />
-    <PackageReference Include="SpecFlow.CustomPlugin" Version="2.3.1" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
+    <PackageReference Include="SpecFlow.CustomPlugin" Version="2.3.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0-rc1" />
 
     <!-- marks all packages as 'local only' so they don't end up in the nuspec -->
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
