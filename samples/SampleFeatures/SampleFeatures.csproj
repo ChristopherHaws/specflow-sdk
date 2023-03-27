@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="SpecFlow" Version="2.4.0" />
-    <PackageReference Include="SpecRun.SpecFlow.2-4-0" Version="1.8.5" />
+    <PackageReference Include="SpecRun.SpecFlow.2-4-0" Version="3.2.31" />
     <PackageReference Include="FluentAssertions" Version="5.5.3" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
